@@ -1,2 +1,22 @@
+# Project memory
 .cunzhi-memory/
+
+# .NET build outputs
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Tt]est[Rr]esults/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# Publish outputs
+**/publish/
+
+# Installer outputs
+installer/dist/
 
