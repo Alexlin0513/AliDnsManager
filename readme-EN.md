@@ -5,6 +5,8 @@
 [![UI](https://img.shields.io/badge/UI-WPF-7952B3)](#)
 [![License](https://img.shields.io/badge/License-Custom-lightgrey)](#license)
 
+[中文](./README.md)[English]
+
 A modern WPF desktop app to manage Alibaba Cloud DNS records.
 
 ## Table of Contents
@@ -41,6 +43,5 @@ A desktop app that connects to the AliDNS API, lets you list domains and manage 
 - For learning and personal use only
 
 ## Related Docs
-- Deployment: see [deploy.md](./deploy.md)
-- Test scope and cases: see repository root test.md
+- Packaging: see [deploy.md](./deploy.md)
 
