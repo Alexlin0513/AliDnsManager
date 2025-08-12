@@ -50,3 +50,5 @@ A desktop app that connects to the AliDNS API, lets you list domains and manage 
 
 ## aboutauthor
  [blog](https://smlin0513.cn)
+
+# IF feel like I can order a star⭐
