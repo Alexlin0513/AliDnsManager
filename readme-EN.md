@@ -37,10 +37,10 @@ A desktop app that connects to the AliDNS API, lets you list domains and manage 
 3. Select a domain and manage records (add/edit/delete/enable/disable)
 
 ## Screenshots
-- ![alt text](photo/main.png)
-- ![alt text](photo/add.png)
-- ![alt text](photo/delete.png)
-- ![alt text](photo/edit.png)
+![main](photo/main.png)
+![add](photo/add.png)
+![delete](photo/delete.png)
+![edit](photo/edit.png)
 
 ## License
 - For learning and personal use only
