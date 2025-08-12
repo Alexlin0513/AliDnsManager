@@ -1,0 +1,425 @@
+﻿<Window x:Class="AliDnsManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AliDnsManager"
+        xmlns:conv="clr-namespace:AliDnsManager.Converters"
+        mc:Ignorable="d"
+        Title="阿里云DNS解析管理器 作者:Alexlin" Height="650" Width="1000" WindowStartupLocation="CenterScreen"
+        MinHeight="500" MinWidth="800" ResizeMode="CanResize" WindowState="Normal"
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <!-- 现代化样式定义 -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#106EBE"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#005A9E"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#CCCCCC"/>
+                                <Setter Property="Foreground" Value="#666666"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#D13438"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#B71C1C"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#8B0000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#107C10"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0E6B0E"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#0C5A0C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#0078D4"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#0078D4"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <Style x:Key="ModernGroupBox" TargetType="GroupBox">
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.RowSpan="2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6"/>
+                            <ContentPresenter Grid.Row="0"
+                                              ContentSource="Header"
+                                              Margin="15,8,15,0"
+                                              TextElement.FontWeight="SemiBold"
+                                              TextElement.Foreground="#333333"/>
+                            <ContentPresenter Grid.Row="1"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#F0F0F0"/>
+            <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+        </Style>
+        <conv:StatusToChineseConverter x:Key="StatusToChineseConverter" />
+        <conv:LineToChineseConverter x:Key="LineToChineseConverter" />
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 菜单栏 -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="文件(_F)">
+                <MenuItem Header="清除保存的配置(_C)" Click="MenuClearConfig_Click"/>
+                <Separator/>
+                <MenuItem Header="退出(_X)" Click="MenuExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="帮助(_H)">
+                <MenuItem Header="关于(_A)" Click="MenuAbout_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- 配置区域 -->
+        <GroupBox Grid.Row="1" Header="账户配置" Margin="10,5" Style="{StaticResource ModernGroupBox}">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 第一行：AccessKey ID 和 AccessKey Secret -->
+                <Label Grid.Row="0" Grid.Column="0" Content="AccessKey ID:" VerticalAlignment="Center" FontWeight="Medium" FontSize="12"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Name="txtAccessKeyId" Margin="5,0" Height="28"
+                         Background="White" BorderBrush="#CCCCCC" BorderThickness="1"
+                         Foreground="#333333" FontSize="12" Padding="6,4"/>
+
+                <Label Grid.Row="0" Grid.Column="2" Content="AccessKey Secret:" VerticalAlignment="Center" FontWeight="Medium" FontSize="12" Margin="10,0,0,0"/>
+                <PasswordBox Grid.Row="0" Grid.Column="3" Name="txtAccessKeySecret" Margin="5,0" Height="28"
+                             Background="White" BorderBrush="#CCCCCC" BorderThickness="1"
+                             Foreground="#333333" FontSize="12" Padding="6,4"/>
+
+                <Button Grid.Row="0" Grid.Column="4" Name="btnConnect" Content="🔗 连接" Width="80" Height="28" Margin="10,0,0,0" Click="BtnConnect_Click" Style="{StaticResource ModernButton}"/>
+
+                <!-- 第二行：状态 -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,8,0,0">
+                    <Ellipse Name="statusIndicator" Width="10" Height="10" Fill="Red" VerticalAlignment="Center"/>
+                    <TextBlock Name="txtStatus" Text="未连接" Foreground="#666666" VerticalAlignment="Center" Margin="6,0,0,0" FontWeight="Medium" FontSize="12"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <!-- 域名选择区域 -->
+        <GroupBox Grid.Row="2" Header="🌐 域名管理" Margin="15,0,15,10" Style="{StaticResource ModernGroupBox}">
+            <Grid Margin="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Content="选择域名:" VerticalAlignment="Center" FontWeight="Medium"/>
+                <ComboBox Grid.Column="1" Name="cmbDomains" Margin="8,0" Height="32" SelectionChanged="CmbDomains_SelectionChanged" Style="{StaticResource ModernComboBox}"/>
+                <Button Grid.Column="2" Name="btnRefreshDomains" Content="🔄 刷新域名" Width="100" Height="32" Margin="10,0" Click="BtnRefreshDomains_Click" Style="{StaticResource ModernButton}"/>
+                <TextBlock Grid.Column="3" Name="txtDomainCount" Text="" VerticalAlignment="Center" Foreground="#666666" FontWeight="Medium"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- DNS记录管理区域 -->
+        <GroupBox Grid.Row="3" Header="📋 DNS记录管理" Margin="15,0,15,10" Style="{StaticResource ModernGroupBox}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 操作按钮 -->
+                <Border Grid.Row="0" Background="#F8F9FA" CornerRadius="4" Margin="0,0,0,10" Padding="15,10">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="btnAddRecord" Content="➕ 添加记录" Width="100" Height="35" Margin="0,0,10,0" Click="BtnAddRecord_Click" Style="{StaticResource SuccessButton}"/>
+                        <Button Name="btnEditRecord" Content="✏️ 编辑记录" Width="100" Height="35" Margin="0,0,10,0" Click="BtnEditRecord_Click" Style="{StaticResource ModernButton}"/>
+                        <Button Name="btnDeleteRecord" Content="🗑️ 删除记录" Width="100" Height="35" Margin="0,0,10,0" Click="BtnDeleteRecord_Click" Style="{StaticResource DangerButton}"/>
+                        <Separator Style="{x:Null}" Width="1" Background="#E0E0E0" Margin="10,5"/>
+                        <Button Name="btnRefreshRecords" Content="🔄 刷新记录" Width="100" Height="35" Margin="10,0,10,0" Click="BtnRefreshRecords_Click" Style="{StaticResource ModernButton}"/>
+                        <Button Name="btnEnableRecord" Content="✅ 启用" Width="80" Height="35" Margin="0,0,10,0" Click="BtnEnableRecord_Click" Style="{StaticResource SuccessButton}"/>
+                        <Button Name="btnDisableRecord" Content="❌ 禁用" Width="80" Height="35" Click="BtnDisableRecord_Click" Style="{StaticResource DangerButton}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- DNS记录列表 -->
+                <DataGrid Grid.Row="1" Name="dgRecords" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" IsReadOnly="True" Style="{StaticResource ModernDataGrid}"
+                          PreviewMouseDoubleClick="DgRecords_PreviewMouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="主机记录" Binding="{Binding RR}" Width="120">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="记录类型" Binding="{Binding Type}" Width="90">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="记录值" Binding="{Binding Value}" Width="250">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="TTL" Binding="{Binding TTL}" Width="80">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="优先级" Binding="{Binding Priority}" Width="80">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="线路" Width="100">
+                            <DataGridTextColumn.Binding>
+                                <Binding Path="Line" Converter="{StaticResource LineToChineseConverter}" />
+                            </DataGridTextColumn.Binding>
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="状态" Width="80">
+                            <DataGridTextColumn.Binding>
+                                <Binding Path="Status" Converter="{StaticResource StatusToChineseConverter}"/>
+                            </DataGridTextColumn.Binding>
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Header="多选" Width="60">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8F9FA"/>
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="12,8"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding Locked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Focusable="False"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="记录ID" Binding="{Binding RecordId}" Width="150" Visibility="Collapsed"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- 记录统计信息 -->
+                <Border Grid.Row="2" Background="#F8F9FA" CornerRadius="4" Margin="0,10,0,0" Padding="15,8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📊 记录统计：" FontWeight="Medium" VerticalAlignment="Center"/>
+                        <TextBlock Name="txtRecordCount" Text="0 条记录" Margin="8,0" VerticalAlignment="Center" Foreground="#666666"/>
+                        <Separator Style="{x:Null}" Width="1" Background="#E0E0E0" Margin="15,2" Height="16"/>
+                        <TextBlock Text="🎯 选中：" FontWeight="Medium" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                        <TextBlock Name="txtSelectedRecord" Text="无" Margin="8,0" VerticalAlignment="Center" Foreground="#666666"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </GroupBox>
+
+        <!-- 状态栏 -->
+        <StatusBar Grid.Row="4" Background="#F8F9FA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Name="statusBarIndicator" Width="8" Height="8" Fill="#28A745" VerticalAlignment="Center"/>
+                    <TextBlock Name="txtStatusBar" Text="就绪" Margin="8,0" VerticalAlignment="Center" FontWeight="Medium"/>
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="阿里云DNS解析管理器 v1.0.0 作者:Alexlin" Foreground="#666666" VerticalAlignment="Center"/>
+                    <Separator Style="{x:Null}" Width="1" Background="#E0E0E0" Margin="10,2" Height="16"/>
+                    <TextBlock Name="txtCurrentTime" Text="" Foreground="#666666" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

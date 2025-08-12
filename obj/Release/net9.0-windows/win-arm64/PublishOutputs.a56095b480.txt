@@ -1,0 +1,15 @@
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AliDnsManager.exe
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AliDnsManager.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AliDnsManager.deps.json
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AliDnsManager.runtimeconfig.json
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AliDnsManager.pdb
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AlibabaCloud.EndpointUtil.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AlibabaCloud.GatewaySpi.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AlibabaCloud.OpenApiClient.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AlibabaCloud.OpenApiUtil.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AlibabaCloud.SDK.Alidns20150109.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AlibabaCloud.TeaUtil.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\AlibabaCloud.TeaXML.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\Aliyun.Credentials.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\Newtonsoft.Json.dll
+H:\code\aug\AliDnsManager\bin\Release\net9.0-windows\win-arm64\publish\Tea.dll
