@@ -7,7 +7,7 @@
 
 [中文](./README.md)[English]
 
-A modern WPF desktop app to manage Alibaba Cloud DNS records.
+A modern desktop app to manage Alibaba Cloud DNS records.
 
 ## Table of Contents
 - [Introduction](#introduction)
