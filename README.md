@@ -47,7 +47,10 @@
 - 配置：密钥加密存储；可通过菜单清除
 
 ### 界面截图
-- 暂无截图，后续补充
+- ![alt text](photo/main.png)
+- ![alt text](photo/add.png)
+- ![alt text](photo/delete.png)
+- ![alt text](photo/edit.png)
 
 ### 注意事项
 - 请妥善保管 AccessKey，不要提交到公共仓库
@@ -59,3 +62,6 @@
 
 ## 相关文档
 - 打包：请参见 [deploy.md](./deploy.md)
+
+## 关于作者
+ [博客](https://smlin0513.cn)
